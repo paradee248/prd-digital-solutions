@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="robots" content="noindex, nofollow">
 <title>คลังระบบ · PRD Digital Solutions</title>
+<link rel="icon" type="image/png" href="../assets/img/logo-prd.png">
 <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 <style>
   :root{ --ink:#0F172A; --mut:#64748B; --line:#E2E8F0; --pri:#6366F1; --pri2:#A855F7; }
@@ -14,25 +15,51 @@
   header{ display:flex; flex-wrap:wrap; gap:12px; align-items:center; justify-content:space-between; margin-bottom:18px; }
   h1{ font-size:22px; margin:0; font-weight:600; }
   h1 small{ display:block; font-size:12.5px; font-weight:400; color:var(--mut); margin-top:2px; }
-  .home{ font-size:13px; text-decoration:none; color:var(--ink); background:#fff; border:1.5px solid var(--line); padding:8px 16px; border-radius:999px; }
+  .badge{ display:inline-block; font-size:11.5px; padding:3px 10px; border-radius:999px; background:#EEF2FF; border:1px solid #C7D2FE; color:#4338CA; }
   .bar{ display:flex; flex-wrap:wrap; gap:10px; margin-bottom:14px; }
-  input,select{ font-family:inherit; font-size:14px; padding:10px 14px; border:1.5px solid var(--line); border-radius:14px; background:#fff; color:var(--ink); }
-  input:focus,select:focus{ outline:none; border-color:var(--pri); }
-  .bar input{ flex:1 1 220px; } .bar select{ flex:0 1 170px; }
+  input,select,textarea{ font-family:inherit; font-size:14px; padding:10px 14px; border:1.5px solid var(--line); border-radius:14px; background:#fff; color:var(--ink); width:100%; }
+  input:focus,select:focus,textarea:focus{ outline:none; border-color:var(--pri); }
+  .bar input{ flex:1 1 220px; width:auto; } .bar select{ flex:0 1 170px; width:auto; }
+  button,a.btn{ font-family:inherit; font-size:14px; cursor:pointer; border:none; border-radius:999px; padding:10px 18px; font-weight:500; text-decoration:none; display:inline-block; }
+  .btn{ background:linear-gradient(100deg,var(--pri),var(--pri2)); color:#fff; box-shadow:0 8px 20px -10px rgba(99,102,241,.7); }
+  .btn.ghost{ background:#fff; color:var(--ink); border:1.5px solid var(--line); box-shadow:none; }
+  .btn.sm{ padding:6px 12px; font-size:12.5px; }
+  .btn:disabled{ opacity:.6; cursor:default; }
   .count{ font-size:13px; color:var(--mut); margin:4px 2px 12px; }
   .grid{ display:grid; grid-template-columns:repeat(auto-fill,minmax(300px,1fr)); gap:14px; }
   .card{ background:rgba(255,255,255,.85); border:1px solid #fff; border-radius:24px; padding:18px; box-shadow:0 10px 30px -18px rgba(15,23,42,.35); display:flex; flex-direction:column; gap:10px; }
+  .card.off{ opacity:.5; }
   .top{ display:flex; justify-content:space-between; gap:8px; align-items:flex-start; }
   .name{ font-weight:600; font-size:16px; line-height:1.3; }
   .grp{ font-size:12px; color:var(--mut); }
   .desc{ font-size:13.5px; color:#334155; line-height:1.5; }
+  .nodemo{ font-size:12.5px; color:var(--mut); }
+  .meta{ font-size:12px; color:var(--mut); line-height:1.5; border-top:1px dashed var(--line); padding-top:8px; word-break:break-word; }
   .st{ font-size:11px; font-weight:700; letter-spacing:.05em; padding:4px 10px; border-radius:999px; white-space:nowrap; }
   .st.live{ background:#DCFCE7; color:#15803D; } .st.completed{ background:#DBEAFE; color:#1D4ED8; }
   .st.progress{ background:#FEF3C7; color:#B45309; } .st.experiment{ background:#F3E8FF; color:#7E22CE; }
   .st.concept{ background:#F1F5F9; color:#475569; }
   .links{ display:flex; flex-wrap:wrap; gap:6px; }
   .links a{ font-size:12.5px; text-decoration:none; color:#4338CA; background:#EEF2FF; padding:5px 11px; border-radius:999px; }
-  .msg{ text-align:center; padding:50px 10px; color:var(--mut); }
+  .links a.real{ background:#4338CA; color:#fff; }
+  .links a.dim{ color:#475569; background:#F1F5F9; }
+  .row{ display:flex; flex-wrap:wrap; gap:8px; align-items:center; }
+  .sw{ display:flex; align-items:center; gap:6px; font-size:12.5px; color:var(--mut); cursor:pointer; user-select:none; }
+  .sw input{ width:auto; accent-color:var(--pri); }
+  .empty{ text-align:center; padding:50px 10px; color:var(--mut); }
+  .toast{ position:fixed; left:50%; bottom:24px; transform:translateX(-50%); background:#0F172A; color:#fff; padding:10px 18px; border-radius:999px; font-size:13.5px; opacity:0; pointer-events:none; transition:.25s; z-index:10; }
+  .toast.show{ opacity:1; }
+  dialog{ border:none; border-radius:28px; padding:0; width:min(560px,94vw); max-height:92vh; box-shadow:0 30px 80px -20px rgba(15,23,42,.5); }
+  dialog::backdrop{ background:rgba(15,23,42,.35); }
+  form{ padding:22px; display:grid; gap:12px; }
+  form h2{ margin:0 0 4px; font-size:18px; }
+  label{ font-size:12.5px; color:var(--mut); display:block; margin-bottom:4px; }
+  .two{ display:grid; grid-template-columns:1fr 1fr; gap:10px; }
+  @media(max-width:520px){ .two{ grid-template-columns:1fr; } }
+  .priv{ font-size:12px; color:#B45309; background:#FFFBEB; border-radius:12px; padding:8px 12px; }
+  .err{ font-size:13px; color:#B91C1C; min-height:18px; }
+  .ic{ width:1.05em; height:1.05em; vertical-align:-.15em; margin-right:2px; }
+  button .ic,a.btn .ic{ margin-right:6px; }
   footer{ margin-top:36px; text-align:center; font-size:12px; color:var(--mut); }
 </style>
 </head>
@@ -40,7 +67,13 @@
 <div class="wrap">
   <header>
     <h1>คลังระบบ <small>ตัวอย่างระบบที่ปรางค์พัฒนา · PRD Digital Solutions</small></h1>
-    <a class="home" href="/" target="_self">← กลับหน้าหลัก</a>
+    <div class="row">
+      <span class="badge" id="mode" style="display:none">โหมดส่วนตัว · เห็นทุกอย่าง</span>
+      <button class="btn sm" id="addBtn" style="display:none">+ เพิ่มระบบ</button>
+      <button class="btn ghost sm" id="loginBtn"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="11" width="16" height="10" rx="2"/><path d="M8 11V7a4 4 0 018 0v4"/></svg> เข้าสู่ระบบ</button>
+      <button class="btn ghost sm" id="logoutBtn" style="display:none">ออกจากระบบ</button>
+      <a class="btn ghost sm" href="/" target="_self"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 12H5M11 18l-6-6 6-6"/></svg> หน้าหลัก</a>
+    </div>
   </header>
 
   <div class="bar">
@@ -54,31 +87,137 @@
   </div>
   <div class="count" id="count"></div>
   <div class="grid" id="grid"></div>
-  <div class="msg" id="msg">กำลังโหลด…</div>
-  <footer>ระบบที่แสดงเป็นตัวอย่างที่เลือกเปิดให้ชมเท่านั้น · ข้อมูลผู้ใช้จริงไม่ถูกเปิดเผย</footer>
+  <div class="empty" id="msg">กำลังโหลด…</div>
+  <footer>ระบบที่แสดงเป็นตัวอย่างที่เลือกเปิดให้ชมเท่านั้น · ใช้ข้อมูลสมมติ ไม่เปิดเผยข้อมูลผู้ใช้จริง</footer>
 </div>
+
+<!-- เข้าสู่ระบบ -->
+<dialog id="loginDlg">
+  <form id="loginForm">
+    <h2>เข้าสู่ระบบ</h2>
+    <div><label for="pw">รหัสผ่าน</label><input id="pw" type="password" autocomplete="current-password" required></div>
+    <div class="err" id="loginErr"></div>
+    <div class="row" style="justify-content:flex-end">
+      <button type="button" class="btn ghost" id="loginCancel">ยกเลิก</button>
+      <button type="submit" class="btn" id="loginGo">เข้าสู่ระบบ</button>
+    </div>
+  </form>
+</dialog>
+
+<!-- เพิ่ม/แก้ไข (เจ้าของเท่านั้น) -->
+<dialog id="dlg">
+  <form id="form">
+    <h2 id="dtitle">เพิ่มระบบ</h2>
+    <input type="hidden" id="f_id">
+    <div><label>ชื่อระบบ *</label><input id="f_name" required maxlength="120"></div>
+    <div class="two">
+      <div><label>กลุ่ม</label><input id="f_group" list="groups" placeholder="เช่น โรงเรียน / ธุรกิจและร้านค้า"><datalist id="groups"></datalist></div>
+      <div><label>สถานะ</label>
+        <select id="f_status"><option value="live">LIVE</option><option value="completed">COMPLETED</option><option value="progress">IN PROGRESS</option><option value="experiment">EXPERIMENT</option><option value="concept">CONCEPT</option></select>
+      </div>
+    </div>
+    <div><label>คำอธิบายสั้น ๆ (คนนอกเห็นถ้าติ๊กแชร์)</label><textarea id="f_desc" rows="2" maxlength="500"></textarea></div>
+    <div class="two">
+      <div><label>ลิงก์ demo (คนนอกเห็น)</label><input id="f_demo" placeholder="https://…"></div>
+      <div><label>ลิงก์รูป/คู่มือ (คนนอกเห็น)</label><input id="f_doc" placeholder="https://…"></div>
+    </div>
+    <div class="two">
+      <div><label>ลิงก์ระบบจริง <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="11" width="16" height="10" rx="2"/><path d="M8 11V7a4 4 0 018 0v4"/></svg></label><input id="f_url" placeholder="https://…"></div>
+      <div><label>ลิงก์ต้นแบบสำหรับขาย <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="11" width="16" height="10" rx="2"/><path d="M8 11V7a4 4 0 018 0v4"/></svg></label><input id="f_template" placeholder="https://…"></div>
+    </div>
+    <div class="two">
+      <div><label>ลิงก์ Sheet ข้อมูล <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="11" width="16" height="10" rx="2"/><path d="M8 11V7a4 4 0 018 0v4"/></svg></label><input id="f_sheet" placeholder="https://…"></div>
+      <div><label>ลิงก์โค้ด <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="11" width="16" height="10" rx="2"/><path d="M8 11V7a4 4 0 018 0v4"/></svg></label><input id="f_code" placeholder="https://…"></div>
+    </div>
+    <div class="two">
+      <div><label>ลูกค้า/ผู้ใช้ <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="11" width="16" height="10" rx="2"/><path d="M8 11V7a4 4 0 018 0v4"/></svg></label><input id="f_client"></div>
+      <div><label>หมายเหตุ / วิธีติดตั้ง <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="11" width="16" height="10" rx="2"/><path d="M8 11V7a4 4 0 018 0v4"/></svg></label><input id="f_note"></div>
+    </div>
+    <div class="priv"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="11" width="16" height="10" rx="2"/><path d="M8 11V7a4 4 0 018 0v4"/></svg> = เห็นเฉพาะตอนเข้าสู่ระบบ ไม่ถูกส่งให้คนทั่วไปเด็ดขาด</div>
+    <div class="err" id="saveErr"></div>
+    <div class="row" style="justify-content:flex-end">
+      <button type="button" class="btn ghost" id="cancel">ยกเลิก</button>
+      <button type="submit" class="btn" id="saveBtn">บันทึก</button>
+    </div>
+  </form>
+</dialog>
+<div class="toast" id="toast"></div>
 
 <script>
 
 const WEB_APP_URL = 'https://script.google.com/macros/s/AKfycbz08AkKY8OZ9F3wxld0oOi-ILxLS7jfVUByKSajKDfqZLDaDYk-kZIM9RHIaAGRSFhIxg/exec';
 
 
-let ROWS = [];
-const $ = id => document.getElementById(id);
+const FIELDS = ['id','name','group','status','desc','demo','doc','url','template','sheet','code','client','note'];
 const ORDER = { live:0, completed:1, progress:2, experiment:3, concept:4 };
 const LABEL = { live:'LIVE', completed:'COMPLETED', progress:'IN PROGRESS', experiment:'EXPERIMENT', concept:'CONCEPT' };
+const $ = id => document.getElementById(id);
+
+let ROWS = [];
+let TOKEN = '';
+try { TOKEN = sessionStorage.getItem('prd_lib_token') || ''; } catch (e) {}
+const isOwner = () => !!TOKEN;
 
 function esc(s){ return String(s==null?'':s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
 function okUrl(u){ return /^https?:\/\//i.test(u||''); }
-function link(label,u){ return okUrl(u) ? `<a href="${esc(u)}" target="_blank" rel="noopener noreferrer">${label}</a>` : ''; }
+function toast(m){ const t=$('toast'); t.textContent=m; t.classList.add('show'); setTimeout(()=>t.classList.remove('show'),2200); }
+function setToken(t){ TOKEN=t||''; try{ t ? sessionStorage.setItem('prd_lib_token',t) : sessionStorage.removeItem('prd_lib_token'); }catch(e){} }
 
+/* ---------- เรียก API ---------- */
+// ใช้ text/plain เพื่อไม่ให้เบราว์เซอร์ต้องทำ preflight (Apps Script ไม่รองรับ)
+async function api(action, payload){
+  const r = await fetch(WEB_APP_URL, { method:'POST', headers:{'Content-Type':'text/plain;charset=utf-8'},
+    body: JSON.stringify(Object.assign({ action, token: TOKEN }, payload||{})) });
+  const d = await r.json();
+  if (!d.ok) { const e = new Error(d.error || 'error'); e.code = d.error; e.left = d.left; throw e; }
+  return d;
+}
+async function loadPublic(){
+  const r = await fetch(WEB_APP_URL + '?api=list'); const d = await r.json();
+  ROWS = Array.isArray(d.rows) ? d.rows : [];
+}
+async function load(){
+  try {
+    if (isOwner()) {
+      try { ROWS = (await api('all')).rows; }
+      catch (e) { if (e.code === 'session') { setToken(''); toast('หมดเวลาแล้ว กรุณาเข้าสู่ระบบใหม่'); await loadPublic(); } else throw e; }
+    } else { await loadPublic(); }
+    init(); render();
+  } catch (e) { $('msg').style.display=''; $('msg').textContent = 'โหลดข้อมูลไม่สำเร็จ ลองรีเฟรชอีกครั้งนะคะ'; }
+}
+
+/* ---------- แสดงผล ---------- */
+function init(){
+  const o = isOwner();
+  $('mode').style.display = o ? '' : 'none';
+  $('addBtn').style.display = o ? '' : 'none';
+  $('logoutBtn').style.display = o ? '' : 'none';
+  $('loginBtn').style.display = o ? 'none' : '';
+  const groups=[...new Set(ROWS.map(r=>r.group).filter(Boolean))].sort();
+  const cur=$('fg').value;
+  $('fg').innerHTML='<option value="">ทุกกลุ่ม</option>'+groups.map(g=>`<option>${esc(g)}</option>`).join('');
+  $('fg').value = groups.includes(cur)?cur:'';
+  $('groups').innerHTML = groups.map(g=>`<option value="${esc(g)}">`).join('');
+}
+function link(label,u,cls){ return okUrl(u) ? `<a class="${cls||''}" href="${esc(u)}" target="_blank" rel="noopener noreferrer">${label}</a>` : ''; }
 function card(r){
-  const links = link('เปิดระบบ',r.url) + link('ลอง demo',r.demo) + link('รูป/คู่มือ',r.doc);
-  return `<div class="card">
-    <div class="top"><div><div class="name">${esc(r.name)}</div><div class="grp">${esc(r.group)}</div></div>
+  const o = isOwner();
+  const pub = link('ลอง demo',r.demo) + link('รูป/คู่มือ',r.doc);
+  const priv = o ? link('เปิดระบบจริง',r.url,'real') + link('ต้นแบบขาย',r.template,'dim') + link('Sheet ข้อมูล',r.sheet,'dim') + link('โค้ด',r.code,'dim') : '';
+  const links = priv + pub;
+  const meta = o ? [r.client && 'ลูกค้า/ผู้ใช้: '+esc(r.client), r.note && 'หมายเหตุ: '+esc(r.note)].filter(Boolean).join('<br>') : '';
+  const ctrl = o ? `<div class="row">
+      <label class="sw"><input type="checkbox" data-act="share" data-id="${esc(r.id)}" ${r.share?'checked':''}> แชร์ให้คนอื่นดู</label>
+      <button class="btn ghost sm" data-act="edit" data-id="${esc(r.id)}">แก้ไข</button>
+      <button class="btn ghost sm" data-act="hide" data-id="${esc(r.id)}">${r.hidden?'เลิกซ่อน':'ซ่อน'}</button>
+    </div>` : '';
+  return `<div class="card ${r.hidden?'off':''}">
+    <div class="top"><div><div class="name">${esc(r.name)}</div><div class="grp">${esc(r.group)}${r.hidden?' · (ซ่อนอยู่)':''}</div></div>
       <span class="st ${esc(r.status)}">${LABEL[r.status]||''}</span></div>
     ${r.desc?`<div class="desc">${esc(r.desc)}</div>`:''}
-    ${links?`<div class="links">${links}</div>`:''}
+    ${links?`<div class="links">${links}</div>`:(o?'':'<div class="nodemo">demo กำลังจัดทำ</div>')}
+    ${meta?`<div class="meta">${meta}</div>`:''}
+    ${ctrl}
   </div>`;
 }
 function render(){
@@ -86,20 +225,69 @@ function render(){
   const rows = ROWS.filter(r => (!g||r.group===g) && (!s||r.status===s) &&
       (!q || (r.name+' '+r.desc+' '+r.group).toLowerCase().includes(q)))
     .sort((a,b)=>(ORDER[a.status]-ORDER[b.status]) || a.name.localeCompare(b.name,'th'));
-  $('count').textContent = rows.length + ' ระบบ';
+  $('count').textContent = rows.length + ' ระบบ' + (isOwner() ? ` · แชร์อยู่ ${ROWS.filter(r=>r.share&&!r.hidden).length} ระบบ` : '');
   $('grid').innerHTML = rows.map(card).join('');
   $('msg').style.display = rows.length ? 'none' : '';
   if (!rows.length) $('msg').textContent = ROWS.length ? 'ไม่พบระบบที่ตรงกับเงื่อนไข' : 'ยังไม่มีระบบที่เปิดให้ชม';
 }
-function init(){
-  const groups=[...new Set(ROWS.map(r=>r.group).filter(Boolean))].sort();
-  $('fg').innerHTML='<option value="">ทุกกลุ่ม</option>'+groups.map(g=>`<option>${esc(g)}</option>`).join('');
+
+/* ---------- เข้า/ออกจากระบบ ---------- */
+$('loginBtn').onclick = ()=>{ $('pw').value=''; $('loginErr').textContent=''; $('loginDlg').showModal(); $('pw').focus(); };
+$('loginCancel').onclick = ()=>$('loginDlg').close();
+$('loginForm').onsubmit = async e=>{
+  e.preventDefault(); $('loginGo').disabled=true; $('loginErr').textContent='';
+  try {
+    const d = await api('login', { password: $('pw').value });
+    setToken(d.token); $('pw').value=''; $('loginDlg').close(); toast('เข้าสู่ระบบแล้ว'); await load();
+  } catch (err) {
+    $('loginErr').textContent =
+      err.code==='locked' ? 'ใส่ผิดหลายครั้ง ระบบล็อกชั่วคราว ลองใหม่ใน 15 นาที' :
+      err.code==='wrong' ? 'รหัสไม่ถูกต้อง (เหลืออีก '+err.left+' ครั้งก่อนล็อก)' :
+      err.code==='no_password' ? 'ยังไม่ได้ตั้งรหัสผ่านในชีต' : 'เข้าสู่ระบบไม่สำเร็จ ลองใหม่อีกครั้ง';
+  } finally { $('loginGo').disabled=false; }
+};
+$('logoutBtn').onclick = async ()=>{
+  const t = TOKEN; setToken(''); try{ await fetch(WEB_APP_URL,{method:'POST',headers:{'Content-Type':'text/plain;charset=utf-8'},body:JSON.stringify({action:'logout',token:t})}); }catch(e){}
+  toast('ออกจากระบบแล้ว'); await load();
+};
+
+/* ---------- เพิ่ม/แก้ไข/แชร์/ซ่อน ---------- */
+function fail(e){
+  if (e && e.code==='session'){ setToken(''); toast('หมดเวลาแล้ว กรุณาเข้าสู่ระบบใหม่'); load(); return; }
+  $('saveErr').textContent = 'ผิดพลาด: ' + (e && e.message ? e.message : e);
 }
-fetch(WEB_APP_URL + '?api=list')
-  .then(r => { if(!r.ok) throw new Error(r.status); return r.json(); })
-  .then(d => { ROWS = Array.isArray(d.rows) ? d.rows : []; init(); render(); })
-  .catch(() => { $('msg').textContent = 'โหลดข้อมูลไม่สำเร็จ ลองรีเฟรชอีกครั้งนะคะ'; });
+function openDlg(r){
+  $('dtitle').textContent = r ? 'แก้ไขระบบ' : 'เพิ่มระบบ'; $('saveErr').textContent='';
+  FIELDS.forEach(k=>{ $('f_'+k).value = r ? (r[k]||'') : (k==='status'?'concept':''); });
+  $('dlg').showModal();
+}
+$('addBtn').onclick = ()=>openDlg(null);
+$('cancel').onclick = ()=>$('dlg').close();
+$('form').onsubmit = async e=>{
+  e.preventDefault(); $('saveBtn').disabled=true; $('saveErr').textContent='';
+  const d = {}; FIELDS.forEach(k=>d[k]=$('f_'+k).value);
+  try { await api('save',{ data:d }); $('dlg').close(); toast('บันทึกแล้ว'); await load(); }
+  catch(err){ fail(err); } finally { $('saveBtn').disabled=false; }
+};
+async function flag(id, field, val){
+  const r = ROWS.find(x=>x.id===id); if (!r) return;
+  r[field]=val; render();
+  try { await api('flag',{ id, field, value: val });
+    toast(field==='share'?(val?'เปิดแชร์แล้ว':'ปิดแชร์แล้ว'):(val?'ซ่อนแล้ว':'เลิกซ่อนแล้ว')); }
+  catch(err){ r[field]=!val; render(); if (err.code==='session') fail(err); else toast('ผิดพลาด: '+err.message); }
+}
+$('grid').addEventListener('click', e=>{
+  const el = e.target.closest('[data-act]'); if (!el || !isOwner()) return;
+  const id = el.dataset.id, r = ROWS.find(x=>x.id===id); if (!r) return;
+  if (el.dataset.act==='edit') openDlg(r);
+  if (el.dataset.act==='hide') flag(id,'hidden',!r.hidden);
+});
+$('grid').addEventListener('change', e=>{
+  const el = e.target.closest('[data-act="share"]'); if (!el || !isOwner()) return;
+  flag(el.dataset.id,'share',el.checked);
+});
 ['q','fg','fs'].forEach(id=>$(id).addEventListener('input',render));
+load();
 </script>
 </body>
 </html>
