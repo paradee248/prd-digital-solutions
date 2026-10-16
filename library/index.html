@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="robots" content="noindex, nofollow">
 <title>คลังระบบ · PRD Digital Solutions</title>
-<link rel="icon" type="image/png" href="../assets/img/logo-prd.png">
+<link rel="icon" type="image/png" href="/assets/img/logo-prd.png">
 <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 <style>
   :root{ --ink:#0F172A; --mut:#64748B; --line:#E2E8F0; --pri:#6366F1; --pri2:#A855F7; }
@@ -39,6 +39,11 @@
   .st.live{ background:#DCFCE7; color:#15803D; } .st.completed{ background:#DBEAFE; color:#1D4ED8; }
   .st.progress{ background:#FEF3C7; color:#B45309; } .st.experiment{ background:#F3E8FF; color:#7E22CE; }
   .st.concept{ background:#F1F5F9; color:#475569; }
+  .demo-btn{ margin-top:auto; display:flex; align-items:center; justify-content:center; gap:8px; width:100%; padding:14px 18px; border-radius:18px; font-size:16px; font-weight:600; text-decoration:none; color:#fff; background:linear-gradient(100deg,#2563EB,#0EA5E9); box-shadow:0 12px 24px -12px rgba(37,99,235,.8); transition:transform .2s, box-shadow .2s; }
+  .demo-btn:hover{ transform:translateY(-2px); box-shadow:0 16px 28px -12px rgba(37,99,235,.9); }
+  .demo-btn .ic{ width:1.3em; height:1.3em; margin:0; vertical-align:0; }
+  .demo-btn.off{ background:#F1F5F9; color:#94A3B8; box-shadow:none; font-weight:500; font-size:14px; cursor:default; }
+  .demo-btn.off:hover{ transform:none; box-shadow:none; }
   .links{ display:flex; flex-wrap:wrap; gap:6px; }
   .links a{ font-size:12.5px; text-decoration:none; color:#4338CA; background:#EEF2FF; padding:5px 11px; border-radius:999px; }
   .links a.real{ background:#4338CA; color:#fff; }
@@ -144,9 +149,7 @@
 <div class="toast" id="toast"></div>
 
 <script>
-
 const WEB_APP_URL = 'https://script.google.com/macros/s/AKfycbz08AkKY8OZ9F3wxld0oOi-ILxLS7jfVUByKSajKDfqZLDaDYk-kZIM9RHIaAGRSFhIxg/exec';
-
 
 const FIELDS = ['id','name','group','status','desc','demo','doc','url','template','sheet','code','client','note'];
 const ORDER = { live:0, completed:1, progress:2, experiment:3, concept:4 };
@@ -199,10 +202,17 @@ function init(){
   $('fg').value = groups.includes(cur)?cur:'';
   $('groups').innerHTML = groups.map(g=>`<option value="${esc(g)}">`).join('');
 }
+const SVG = d => `<svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${d}</svg>`;
+const PLAY = SVG('<circle cx="12" cy="12" r="9"/><path d="M10 8.5l6 3.5-6 3.5z" fill="currentColor"/>');
+const CLOCK = SVG('<circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/>');
 function link(label,u,cls){ return okUrl(u) ? `<a class="${cls||''}" href="${esc(u)}" target="_blank" rel="noopener noreferrer">${label}</a>` : ''; }
 function card(r){
   const o = isOwner();
-  const pub = link('ลอง demo',r.demo) + link('รูป/คู่มือ',r.doc);
+  const hasDemo = okUrl(r.demo);
+  const demoBtn = hasDemo
+    ? `<a class="demo-btn" href="${esc(r.demo)}" target="_blank" rel="noopener noreferrer">${PLAY} ดูตัวอย่าง</a>`
+    : `<div class="demo-btn off">${CLOCK} demo กำลังจัดทำ</div>`;
+  const pub = link('รูป/คู่มือ',r.doc);
   const priv = o ? link('เปิดระบบจริง',r.url,'real') + link('ต้นแบบขาย',r.template,'dim') + link('Sheet ข้อมูล',r.sheet,'dim') + link('โค้ด',r.code,'dim') : '';
   const links = priv + pub;
   const meta = o ? [r.client && 'ลูกค้า/ผู้ใช้: '+esc(r.client), r.note && 'หมายเหตุ: '+esc(r.note)].filter(Boolean).join('<br>') : '';
@@ -215,7 +225,8 @@ function card(r){
     <div class="top"><div><div class="name">${esc(r.name)}</div><div class="grp">${esc(r.group)}${r.hidden?' · (ซ่อนอยู่)':''}</div></div>
       <span class="st ${esc(r.status)}">${LABEL[r.status]||''}</span></div>
     ${r.desc?`<div class="desc">${esc(r.desc)}</div>`:''}
-    ${links?`<div class="links">${links}</div>`:(o?'':'<div class="nodemo">demo กำลังจัดทำ</div>')}
+    ${demoBtn}
+    ${links?`<div class="links">${links}</div>`:''}
     ${meta?`<div class="meta">${meta}</div>`:''}
     ${ctrl}
   </div>`;
@@ -224,7 +235,7 @@ function render(){
   const q=$('q').value.trim().toLowerCase(), g=$('fg').value, s=$('fs').value;
   const rows = ROWS.filter(r => (!g||r.group===g) && (!s||r.status===s) &&
       (!q || (r.name+' '+r.desc+' '+r.group).toLowerCase().includes(q)))
-    .sort((a,b)=>(ORDER[a.status]-ORDER[b.status]) || a.name.localeCompare(b.name,'th'));
+    .sort((a,b)=>(okUrl(b.demo)-okUrl(a.demo)) || (ORDER[a.status]-ORDER[b.status]) || a.name.localeCompare(b.name,'th'));
   $('count').textContent = rows.length + ' ระบบ' + (isOwner() ? ` · แชร์อยู่ ${ROWS.filter(r=>r.share&&!r.hidden).length} ระบบ` : '');
   $('grid').innerHTML = rows.map(card).join('');
   $('msg').style.display = rows.length ? 'none' : '';
