@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>คลังระบบ · PRD Digital Solutions</title>
+<link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{ --ink:#0F172A; --mut:#64748B; --line:#E2E8F0; --pri:#6366F1; --pri2:#A855F7; }
+  *{ box-sizing:border-box; }
+  body{ margin:0; font-family:'Kanit',sans-serif; color:var(--ink); background:linear-gradient(160deg,#EEF2FF 0%,#FDF2F8 55%,#F0FDFA 100%); min-height:100vh; }
+  .wrap{ max-width:1100px; margin:0 auto; padding:24px 16px 80px; }
+  header{ display:flex; flex-wrap:wrap; gap:12px; align-items:center; justify-content:space-between; margin-bottom:18px; }
+  h1{ font-size:22px; margin:0; font-weight:600; }
+  h1 small{ display:block; font-size:12.5px; font-weight:400; color:var(--mut); margin-top:2px; }
+  .home{ font-size:13px; text-decoration:none; color:var(--ink); background:#fff; border:1.5px solid var(--line); padding:8px 16px; border-radius:999px; }
+  .bar{ display:flex; flex-wrap:wrap; gap:10px; margin-bottom:14px; }
+  input,select{ font-family:inherit; font-size:14px; padding:10px 14px; border:1.5px solid var(--line); border-radius:14px; background:#fff; color:var(--ink); }
+  input:focus,select:focus{ outline:none; border-color:var(--pri); }
+  .bar input{ flex:1 1 220px; } .bar select{ flex:0 1 170px; }
+  .count{ font-size:13px; color:var(--mut); margin:4px 2px 12px; }
+  .grid{ display:grid; grid-template-columns:repeat(auto-fill,minmax(300px,1fr)); gap:14px; }
+  .card{ background:rgba(255,255,255,.85); border:1px solid #fff; border-radius:24px; padding:18px; box-shadow:0 10px 30px -18px rgba(15,23,42,.35); display:flex; flex-direction:column; gap:10px; }
+  .top{ display:flex; justify-content:space-between; gap:8px; align-items:flex-start; }
+  .name{ font-weight:600; font-size:16px; line-height:1.3; }
+  .grp{ font-size:12px; color:var(--mut); }
+  .desc{ font-size:13.5px; color:#334155; line-height:1.5; }
+  .st{ font-size:11px; font-weight:700; letter-spacing:.05em; padding:4px 10px; border-radius:999px; white-space:nowrap; }
+  .st.live{ background:#DCFCE7; color:#15803D; } .st.completed{ background:#DBEAFE; color:#1D4ED8; }
+  .st.progress{ background:#FEF3C7; color:#B45309; } .st.experiment{ background:#F3E8FF; color:#7E22CE; }
+  .st.concept{ background:#F1F5F9; color:#475569; }
+  .links{ display:flex; flex-wrap:wrap; gap:6px; }
+  .links a{ font-size:12.5px; text-decoration:none; color:#4338CA; background:#EEF2FF; padding:5px 11px; border-radius:999px; }
+  .msg{ text-align:center; padding:50px 10px; color:var(--mut); }
+  footer{ margin-top:36px; text-align:center; font-size:12px; color:var(--mut); }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <h1>คลังระบบ <small>ตัวอย่างระบบที่ปรางค์พัฒนา · PRD Digital Solutions</small></h1>
+    <a class="home" href="/" target="_self">← กลับหน้าหลัก</a>
+  </header>
+
+  <div class="bar">
+    <input id="q" type="search" placeholder="ค้นหาชื่อ / คำอธิบาย…">
+    <select id="fg"><option value="">ทุกกลุ่ม</option></select>
+    <select id="fs">
+      <option value="">ทุกสถานะ</option>
+      <option value="live">LIVE</option><option value="completed">COMPLETED</option>
+      <option value="progress">IN PROGRESS</option><option value="experiment">EXPERIMENT</option><option value="concept">CONCEPT</option>
+    </select>
+  </div>
+  <div class="count" id="count"></div>
+  <div class="grid" id="grid"></div>
+  <div class="msg" id="msg">กำลังโหลด…</div>
+  <footer>ระบบที่แสดงเป็นตัวอย่างที่เลือกเปิดให้ชมเท่านั้น · ข้อมูลผู้ใช้จริงไม่ถูกเปิดเผย</footer>
+</div>
+
+<script>
+
+const WEB_APP_URL = 'https://script.google.com/macros/s/AKfycbz08AkKY8OZ9F3wxld0oOi-ILxLS7jfVUByKSajKDfqZLDaDYk-kZIM9RHIaAGRSFhIxg/exec';
+
+
+let ROWS = [];
+const $ = id => document.getElementById(id);
+const ORDER = { live:0, completed:1, progress:2, experiment:3, concept:4 };
+const LABEL = { live:'LIVE', completed:'COMPLETED', progress:'IN PROGRESS', experiment:'EXPERIMENT', concept:'CONCEPT' };
+
+function esc(s){ return String(s==null?'':s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
+function okUrl(u){ return /^https?:\/\//i.test(u||''); }
+function link(label,u){ return okUrl(u) ? `<a href="${esc(u)}" target="_blank" rel="noopener noreferrer">${label}</a>` : ''; }
+
+function card(r){
+  const links = link('เปิดระบบ',r.url) + link('ลอง demo',r.demo) + link('รูป/คู่มือ',r.doc);
+  return `<div class="card">
+    <div class="top"><div><div class="name">${esc(r.name)}</div><div class="grp">${esc(r.group)}</div></div>
+      <span class="st ${esc(r.status)}">${LABEL[r.status]||''}</span></div>
+    ${r.desc?`<div class="desc">${esc(r.desc)}</div>`:''}
+    ${links?`<div class="links">${links}</div>`:''}
+  </div>`;
+}
+function render(){
+  const q=$('q').value.trim().toLowerCase(), g=$('fg').value, s=$('fs').value;
+  const rows = ROWS.filter(r => (!g||r.group===g) && (!s||r.status===s) &&
+      (!q || (r.name+' '+r.desc+' '+r.group).toLowerCase().includes(q)))
+    .sort((a,b)=>(ORDER[a.status]-ORDER[b.status]) || a.name.localeCompare(b.name,'th'));
+  $('count').textContent = rows.length + ' ระบบ';
+  $('grid').innerHTML = rows.map(card).join('');
+  $('msg').style.display = rows.length ? 'none' : '';
+  if (!rows.length) $('msg').textContent = ROWS.length ? 'ไม่พบระบบที่ตรงกับเงื่อนไข' : 'ยังไม่มีระบบที่เปิดให้ชม';
+}
+function init(){
+  const groups=[...new Set(ROWS.map(r=>r.group).filter(Boolean))].sort();
+  $('fg').innerHTML='<option value="">ทุกกลุ่ม</option>'+groups.map(g=>`<option>${esc(g)}</option>`).join('');
+}
+fetch(WEB_APP_URL + '?api=list')
+  .then(r => { if(!r.ok) throw new Error(r.status); return r.json(); })
+  .then(d => { ROWS = Array.isArray(d.rows) ? d.rows : []; init(); render(); })
+  .catch(() => { $('msg').textContent = 'โหลดข้อมูลไม่สำเร็จ ลองรีเฟรชอีกครั้งนะคะ'; });
+['q','fg','fs'].forEach(id=>$(id).addEventListener('input',render));
+</script>
+</body>
+</html>
